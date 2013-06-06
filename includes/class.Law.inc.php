@@ -246,28 +246,32 @@ class Law
 
 			/*
 			 * Figure out what the next and prior sections are (we may have 0-1 of either). Iterate
-			 * through all of the contents of the chapter.
+			 * through all of the contents of the chapter. (It's possible that there are no next or
+			 * prior sections, such as in a single-item structural unit.)
 			 */
-			$tmp = count((array) $this->structure_contents);
-			for ($i=0; $i<$tmp; $i++)
+			if ($this->structure_contents !== FALSE)
 			{
-				/*
-				 * When we get to our current section, that's when we get to work.
-				 */
-				if ($this->structure_contents->$i->id == $this->section_id)
+				$tmp = count((array) $this->structure_contents);
+				for ($i=0; $i<$tmp; $i++)
 				{
-					$j = $i-1;
-					$k = $i+1;
-					if (isset($this->structure_contents->$j))
+					/*
+					 * When we get to our current section, that's when we get to work.
+					 */
+					if ($this->structure_contents->$i->id == $this->section_id)
 					{
-						$this->previous_section = $this->structure_contents->$j;
+						$j = $i-1;
+						$k = $i+1;
+						if (isset($this->structure_contents->$j))
+						{
+							$this->previous_section = $this->structure_contents->$j;
+						}
+						
+						if (isset($this->structure_contents->$k))
+						{
+							$this->next_section = $this->structure_contents->$k;
+						}
+						break;
 					}
-					
-					if (isset($this->structure_contents->$k))
-					{
-						$this->next_section = $this->structure_contents->$k;
-					}
-					break;
 				}
 			}
 		}
@@ -580,9 +584,32 @@ class Law
 		 */
 		foreach($metadata as $field)
 		{
-			$rotated->{stripslashes($field->meta_key)} = unserialize(stripslashes($field->meta_value));
+			
+			$row->meta_value = stripslashes($row->meta_value);
+			
+			/*
+			 * If unserializing this value works, then we've got serialized data here.
+			 */
+			if (@unserialize($row->meta_value) !== FALSE)
+			{
+				$row->meta_value = unserialize($row->meta_value);
+			}
+			
+			/*
+			 * Convert y/n values into TRUE/FALSE values.
+			 */
+			if ($row->meta_value == 'y')
+			{
+				$row->meta_value = TRUE;
+			}
+			elseif ($row->meta_value == 'n')
+			{
+				$row->meta_value = FALSE;
+			}
+			
+			$rotated->{stripslashes($row->meta_key)} = $row->meta_value;
+			
 		}
-		
 		return $rotated;
 	}
 	
@@ -706,9 +733,11 @@ class Law
 		
 		/*
 		 * Instantiate our autolinker, which embeds links. If we've defined a state-custom
-		 * autolinker, use that one. Otherwise, use the built-in one.
+		 * autolinker, use that one. Otherwise, use the built-in one. Be sure not to attempt to
+		 * autoload a file fitting our class-name schema, since this class, if it exists, would be
+		 * found within class.[State].inc.php.
 		 */
-		if (class_exists('State_Autolinker') === TRUE)
+		if (class_exists('State_Autolinker', FALSE) === TRUE)
 		{
 			$autolinker = new State_Autolinker;
 		}

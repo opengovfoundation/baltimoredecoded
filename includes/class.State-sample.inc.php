@@ -216,6 +216,19 @@ class Parser
 		{
 			foreach ($this->section->metadata as $key => $value)
 			{
+				
+				/*
+				 * Convert true/false values to y/n values.
+				 */
+				if ($value == 'true')
+				{
+					$value = 'y';
+				}
+				elseif ($value == 'false')
+				{
+					$value = 'n';
+				}
+				
 				$this->code->metadata->$key = $value;
 			}
 		}
@@ -560,9 +573,12 @@ class Parser
 		// config file as a container for global definitions. If it was, then we override the
 		// presumed scope and provide a global scope.
 		$ancestry = array();
-		foreach ($this->code->structure as $struct)
+		if (isset($this->code->structure))
 		{
-			$ancestry[] = $struct->identifier;
+			foreach ($this->code->structure as $struct)
+			{
+				$ancestry[] = $struct->identifier;
+			}
 		}
 		$ancestry = implode(',', $ancestry);
 		$ancestry_section = $ancestry . ','.$this->code->section_number;

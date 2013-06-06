@@ -301,13 +301,12 @@ class Structure
 			if (INCLUDES_REPEALED === TRUE)
 			{
 				$sql .= ' AND
-						(SELECT COUNT(*)
-						FROM laws
-						LEFT JOIN laws_meta
-							ON laws.id = laws_meta.law_id
-						WHERE laws.structure_id=structure.id
-						AND laws_meta.meta_key = "repealed"
-						AND laws_meta.meta_value = "n") > 0';
+					(SELECT COUNT(*)
+					FROM laws
+					LEFT OUTER JOIN laws_meta
+						ON laws.id = laws_meta.law_id AND laws_meta.meta_key = "repealed"
+					WHERE laws.structure_id=structure.id
+					AND ((laws_meta.meta_value = "n") OR laws_meta.meta_value IS NULL)  ) > 0';
 			}
 
 		}
@@ -521,18 +520,28 @@ class Structure
 		// order_by field primarily, but we also order by section as a backup, in case something
 		// should fail with the order_by field. The section column is not wholly reliable for
 		// sorting (hence the order_by field), but it's a great deal better than an unsorted list.
-		$sql = 'SELECT id, structure_id, section AS section_number, catch_line
-				FROM laws
-				WHERE structure_id='.$db->quote($this->id).' ';
-		if (INCLUDES_REPEALED == TRUE)
+
+		if (INCLUDES_REPEALED !== TRUE)
 		{
-			$sql .= 'AND 
-				(SELECT meta_value
-				FROM laws_meta
-				WHERE law_id = laws.id
-				AND meta_key = "repealed") = "n" ';
+		
+			$sql = 'SELECT id, structure_id, section AS section_number, catch_line
+					FROM laws
+					WHERE structure_id=' . $db->quote($this->id) . '
+					ORDER BY order_by, section';
 		}
-		$sql .= 'ORDER BY order_by, section';
+		
+		else
+		{
+		
+			$sql = 'SELECT laws.id, laws.structure_id, laws.section AS section_number, laws.catch_line
+					FROM laws
+					LEFT OUTER JOIN laws_meta
+					ON laws_meta.law_id = laws.id AND laws_meta.meta_key = "repealed"
+					WHERE structure_id=' . $db->quote($this->id) . '
+					AND (laws_meta.meta_value = "n" OR laws_meta.meta_value IS NULL)
+					ORDER BY order_by, section';
+		}
+
 		
 		// Execute the query.
 		$result = $db->query($sql);
