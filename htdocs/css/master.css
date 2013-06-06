@@ -279,6 +279,8 @@ section#page {
 	min-width: 780px; /* keeps the page from collapsing entirely when sized down horizontally */
 	margin: 15px; /* Insets page 15 px from sides and header/footer, making total min width 810px */
 	overflow: hidden;
+	position:relative;
+	top:85px;
 }
 
 
@@ -787,7 +789,7 @@ footer {
 	font-size: 0.6875em;
 	line-height: 1.636em;
 	font-family: Verdana, Arial, sans-serif;
-	margin: 0 -2.95em -2.95em -2.95em; /* Higher because of font downsize */
+	margin: 10em -2.95em -2.95em -2.95em; /* Higher because of font downsize */
 	padding: 2em;
 }
 	footer img {
