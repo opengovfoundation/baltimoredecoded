@@ -55,7 +55,7 @@ class Law
 			$this->config->get_structure = TRUE;
 			$this->config->get_amendment_attempts = TRUE;
 			$this->config->get_court_decisions = TRUE;
-			$this->config->get_metadata = TRUE;
+			$this->config->get_metadata = FALSE;
 			$this->config->get_references = TRUE;
 			$this->config->get_related_laws = TRUE;
 			$this->config->render_html = TRUE;
