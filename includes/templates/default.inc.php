@@ -53,6 +53,7 @@
 				<ul>
 					<li><a href="/" class="ir" id="home">Home</a></li>
 					<li><a href="/about/" class="ir" id="about">About</a></li>
+					<li><a href="http://baltimorecode.org" target="_blank">Municipal Code</a></li>
 				</ul>
 			</nav> <!-- // #main_navigation -->
 		</header> <!-- // #masthead -->
