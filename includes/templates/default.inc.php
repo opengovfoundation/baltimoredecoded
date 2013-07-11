@@ -48,12 +48,10 @@
 				<h1><a href="/">The State Decoded</a></h1>
 			</hgroup>
 			<nav id="main_navigation">
-				<div id="search">
-				</div> <!-- // #search -->
 				<ul>
-					<li><a href="/" class="ir" id="home">Home</a></li>
-					<li><a href="/about/" class="ir" id="about">About</a></li>
-					<li><a href="http://baltimorecode.org" target="_blank">Municipal Code</a></li>
+					<li><a href="/" class="nav-item" id="home">Home</a></li>
+					<li><a href="/about/" class="nav-item" id="about">About</a></li>
+					<li><a href="http://baltimorecode.org" target="_blank" class="nav-item">Municipal Code</a></li>
 				</ul>
 			</nav> <!-- // #main_navigation -->
 		</header> <!-- // #masthead -->
@@ -91,5 +89,6 @@
 	<script src="/contactable.1.3/jquery.contactable.min.js"></script>
 	<script src="/contactable.1.3/jquery.contactable.js"></script>
 	<script src="/js/master.js"></script>
+	<script src="/js/ga.js"></script>
 </body>
 </html>
