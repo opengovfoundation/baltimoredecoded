@@ -48,12 +48,12 @@ $laws->record_view();
  */
 if (isset($_GET['plain_text']))
 {
-	
+
 	/*
 	 * Instruct the browser that this is plain text.
 	 */
 	header("Content-Type: text/plain");
-	
+
 	/*
 	 * Provide a document header.
 	 */
@@ -61,17 +61,17 @@ if (isset($_GET['plain_text']))
 		.strtoupper(LAWS_NAME)."\n\n";
 	echo wordwrap(strtoupper($law->catch_line).' ('.SECTION_SYMBOL.' '.$law->section_number.')'
 		."\n\n", 80, "\n", true);
-		
+
 	/*
 	 * Send the text itself, which is already formatted properly.
 	 */
 	echo $law->plain_text;
-	
+
 	/*
 	 * Include the history.
 	 */
 	echo wordwrap('HISTORY: '.$law->history, 80, "\n", true);
-	
+
 	/*
 	 * End processing and exit.
 	 */
@@ -216,7 +216,7 @@ if ( (INCLUDES_REPEALED == TRUE) && (empty($law->repealed) || ($law->repealed !=
 	if (count((array) $law->amendment_years) > 1)
 	{
 		$sidebar .= ' It was updated in ';
-	
+
 		/*
 		 * Iterate through every year in which this bill has been amended and list them.
 		 */
@@ -252,13 +252,13 @@ if ( (INCLUDES_REPEALED == TRUE) && (empty($law->repealed) || ($law->repealed !=
  */
 if (defined('DISQUS_SHORTNAME') === TRUE)
 {
-	$body .= <<<EOD
-	<section id="comments">
+	$body .= "
+	<section id=\"comments\">
 		<h2>Comments</h2>
-		<div id="disqus_thread"></div>
+		<div id=\"disqus_thread\"></div>
 		<script>
-			var disqus_shortname = 'vacode'; // required: replace example with your forum shortname
-		
+			var disqus_shortname = '" . DISQUS_SHORTNAME . "'; // required: replace example with your forum shortname
+
 			/* * * DON'T EDIT BELOW THIS LINE * * */
 			(function() {
 				var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -266,8 +266,7 @@ if (defined('DISQUS_SHORTNAME') === TRUE)
 				(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 			})();
 		</script>
-	</section>
-EOD;
+	</section>";
 }
 
 /*
@@ -312,7 +311,7 @@ if ($law->references !== FALSE)
  */
 if (isset($law->related) && (count((array) $law->related) > 0))
 {
-	$sidebar .= '			  
+	$sidebar .= '
 			<section id="related-links">
 				<h1>Related Laws</h1>
 				<ul id="related">';
@@ -331,7 +330,7 @@ if (isset($law->related) && (count((array) $law->related) > 0))
  */
 if ( isset($law->citation) && is_object($law->citation) )
 {
-	
+
 	$sidebar .= '<section id="cite-as">
 				<h1>Cite As</h1>
 				<ul>';
@@ -342,7 +341,7 @@ if ( isset($law->citation) && is_object($law->citation) )
 	}
 	$sidebar .= '</ul>
 			</section>';
-	
+
 }
 
 $sidebar .= '<section id="elsewhere">
