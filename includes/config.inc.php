@@ -36,6 +36,11 @@ set_include_path(get_include_path().PATH_SEPARATOR.INCLUDE_PATH);
 define('WEB_ROOT', BASE_PATH . '/htdocs');
 
 /*
+ * Define the data dir.
+ */
+define('DATA_DIRECTORY', WEB_ROOT . '/admin/data/');
+
+/*
  * The file in the /includes/ directory that contains functions custom to this installation.
  */
 define('CUSTOM_FUNCTIONS', 'class.Baltimore.inc.php');
@@ -54,6 +59,13 @@ define('SITE_TITLE', 'Baltimore Decoded');
  * What is the name of the place that these laws govern?
  */
 define('PLACE_NAME', 'City');
+
+/*
+ * What's is the base url?
+ */
+define('HOME_SITE_URL', 'http://baltimorecode.org/');
+
+define('BASE_SITE_DOMAIN', 'baltimorecode.org');
 
 /*
  * What does this state call its laws?
